@@ -4,13 +4,13 @@ class Move {
         this.piece = piece;
         this.start = start;
         this.end = end;
-        this.pieceKinged = checkIfKinged();
+        this.pieceKinged = this.checkIfKinged();
         this.takenPiece = takenPiece;
     }
 
     checkIfKinged() {
-        return (   this.piece.canMoveUp()   && !this.piece.isKinged && this.end.row == 7)
-               || (this.piece.canMoveDown() && !this.piece.isKinged && this.end.row == 0);
+        return (   this.piece.canMoveUp()   && !this.piece.isKing && this.end.row == 7)
+               || (this.piece.canMoveDown() && !this.piece.isKing && this.end.row == 0);
     }
 }
 

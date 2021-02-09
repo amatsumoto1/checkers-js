@@ -4,38 +4,42 @@ import Position from "./position.js";
 
 class Board {
     constructor() {
-        this.board = Array(8).fill(Array(8));
+        this.tiles = new Array(8);
         this.activePlayer = 'red';
         this.activeRedPieces = [];
         this.activeBlackPieces = [];
         this.capturedRedPieces = [];
         this.capturedBlackPieces = [];
         this.possibleMoves = [];
+
+        for (let i = 0; i < 8; i++) {
+            this.tiles[i] = new Array(8);
+        }
     }
 
     initBoardPieces() {
         for (let i = 0; i < 12; i++) {
-            let row = Math.floor(i / 8);
-            let col = i % 8;
+            let row = Math.floor(i / 4);
+            let col = 2*(i % 4) + ((row % 2 == 0) ? 0 : 1);
             let position = new Position(row, col);
             let blackPiece = new Piece("black-piece" + i, "black", position);
             this.activeBlackPieces.push(blackPiece);
-            this.board[row][col] = blackPiece;
+            this.tiles[row][col] = blackPiece;
         }
 
         for (let i = 0; i < 12; i++) {
-            const row = 5 + Math.floor(i / 8);
-            const col = i % 8;
+            let row = 5 + Math.floor(i / 4);
+            let col = 2*(i % 4) + ((row % 2 == 0) ? 0 : 1);
             let position = new Position(row, col);
             let redPiece = new Piece("red-piece" + i, "red", position);
             this.activeRedPieces.push(redPiece);
-            this.board[row][col] = redPiece;
+            this.tiles[row][col] = redPiece;
         }
     }
 
     executeMove(move) {
-        this.board[move.startPosition.row][move.startPosition.col] = null;
-        this.board[move.endPosition.row][move.endPosition.col] = move.piece;
+        this.tiles[move.startPosition.row][move.startPosition.col] = null;
+        this.tiles[move.endPosition.row][move.endPosition.col] = move.piece;
         move.piece.position = move.endPosition;
         if (move.isKinged) {
             move.piece.isKing = true;
@@ -76,8 +80,8 @@ class Board {
     getSlideMoves(piece) {
         const offsets = [[-1, -1], [-1, 1], [1, -1], [1, 1]];
         let moves = [];
-        for (offset of offsets) {
-            let endPosition = new Position(piece.position.row + offset[0], piece.position.col + offset[0]);
+        for (let offset of offsets) {
+            let endPosition = new Position(piece.position.row + offset[0], piece.position.col + offset[1]);
             if (this.isSlideMoveValid(piece, endPosition)) {
                 moves.push(new Move(piece, piece.position, endPosition));
             }
@@ -89,7 +93,7 @@ class Board {
     getJumpMoves(piece) {
         const offsets = [[-1, -1], [-1, 1], [1, -1], [1, 1]];
         let moves = [];
-        for (offset of offsets) {
+        for (let offset of offsets) {
             let jumpPosition = new Position(piece.position.row + offset[0], piece.position.col + offset[1]);
             let endPosition = new Position(piece.position.row + 2*offset[0], piece.position.col + 2*offset[1]);
             if (this.isJumpMoveValid(piece, jumpPosition, endPosition)) {
@@ -102,23 +106,24 @@ class Board {
     }
 
     isSlideMoveValid(piece, endPosition) {
-        if (!endPosition.isInBound()) {
+        if (!endPosition.isInBounds()) {
             return false;
         }
-        if ((endPosition.col > piece.col && !piece.canMoveUp())
-            || (endPosition.col < piece.col && !piece.canMoveDown())) {
+        if ((endPosition.row > piece.position.row && !piece.canMoveUp())
+            || (endPosition.row < piece.position.row && !piece.canMoveDown())) {
             return false;
         }
+
         return !this.hasPiece(endPosition);
     }
 
     isJumpMoveValid(piece, jumpedPosition, endPosition) {
-        if (!endPosition.isInBound()) {
+        if (!endPosition.isInBounds()) {
             return false;
         }
 
-        if ((endPosition.col > piece.col && !piece.canMoveUp())
-            || (endPosition.col < piece.col && !piece.canMoveDown())) {
+        if ((endPosition.row > piece.position.row && !piece.canMoveUp())
+            || (endPosition.row < piece.position.row && !piece.canMoveDown())) {
             return false;
         }
 
@@ -136,15 +141,15 @@ class Board {
     }
 
     hasPiece(position) {
-        return this.board[position.row][position.col] != null;
+        return this.tiles[position.row][position.col] != null;
     }
 
     getPiece(position) {
-        return this.board[position.row][position.col];
+        return this.tiles[position.row][position.col];
     }
 
     removePiece(piece) {
-        this.board[piece.position.row][piece.position.col] = null;
+        this.tiles[piece.position.row][piece.position.col] = null;
         if (piece.color == 'black') {
             let index = this.activeBlackPieces.indexOf(piece);
             this.activeBlackPieces.splice(index);

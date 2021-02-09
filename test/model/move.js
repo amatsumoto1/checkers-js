@@ -23,7 +23,7 @@ describe("move", function() {
     it("should know whether moved piece becomes kinged", function() {
         const blackPiece = new Piece("id1", "black", new Position(6, 6));
         const redPiece = new Piece("id2", "red", new Position(1, 1));
-        const kingPiece = new Piece("id3", "black", new Position(6, 2));
+        const kingPiece = new Piece("id3", "black", new Position(6, 2), true);
 
         const move1 = new Move(blackPiece, new Position(6, 6), new Position(7, 5));
         expect(move1.pieceKinged).to.be.true;
