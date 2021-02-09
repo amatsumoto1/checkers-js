@@ -1,0 +1,24 @@
+{
+  "name": "checkers",
+  "version": "0.0.0",
+  "description": "A checkers web application written in javascript and jQuery",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/amatsumoto1/checkers.git"
+  },
+  "author": "Andrew Matsumoto",
+  "dependencies": {
+    "@babel/cli": "^7.7.4",
+    "@babel/core": "^7.7.4",
+    "@babel/preset-env": "^7.7.4",
+    "@babel/register": "^7.7.4"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "mocha": "^8.2.1"
+  },
+  "type": "module"
+}
