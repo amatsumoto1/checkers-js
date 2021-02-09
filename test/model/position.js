@@ -10,13 +10,15 @@ describe("position", function() {
         expect(position).to.have.property("col", 3);
     });
 
-    it("should determine whether in bounds", function() {
+    it("should know when it is in bounds", function() {
         const bottomLeft = new Position(0, 0);
         expect(bottomLeft.isInBounds()).to.be.true;
 
         const topRight = new Position(7, 7);
         expect(topRight.isInBounds()).to.be.true;
+    });
 
+    it("should know when it is not in bounds", function() {
         const rowTooSmall = new Position(-1, 0);
         expect(rowTooSmall.isInBounds()).to.be.false;
 
