@@ -1,0 +1,29 @@
+body {
+    margin: 0;
+    padding: 0;
+}
+
+.center {
+    margin: auto;
+}
+
+#board {
+    width: 600px;
+    height: 600px;
+}
+
+.board-tile {
+    width: 75px;
+    height: 75px;
+    display: inline;
+    overflow: hidden;
+    float: left;
+}
+
+.black-tile {
+    background-color: black;
+}
+
+.red-tile {
+    background-color: red;
+}
