@@ -10,6 +10,8 @@ body {
 #board {
     width: 600px;
     height: 600px;
+    background-image: url("../images/medium-wood.jpg");
+    background-color: moccasin;
 }
 
 .board-tile {
@@ -21,9 +23,32 @@ body {
 }
 
 .black-tile {
-    background-color: black;
+    background-color:  rgba(0, 0, 0, 0.4);
 }
 
 .red-tile {
+    background-color:  rgba(255, 0, 0, 0.6);
+}
+
+.board-piece {
+    margin: auto;
+    margin-top: 5px;
+    height: 60px;
+    width: 60px;
+    border-radius: 50%;
+    border: 2px solid;
+    border-color: black;
+}
+
+.legal {
+    border-color: limegreen;
+    border-width: 2px;
+}
+
+.red-piece {
     background-color: red;
+}
+
+.black-piece {
+    background-color: black;
 }

@@ -10,11 +10,15 @@ class Board {
         this.activeBlackPieces = [];
         this.capturedRedPieces = [];
         this.capturedBlackPieces = [];
-        this.possibleMoves = [];
+        this.possibleMoves = new Map();
 
         for (let i = 0; i < 8; i++) {
             this.tiles[i] = new Array(8);
         }
+    }
+
+    get currentPieces() {
+        return this.activePlayer == "red" ? this.activeRedPieces : this.activeBlackPieces;
     }
 
     initBoardPieces() {
@@ -35,6 +39,8 @@ class Board {
             this.activeRedPieces.push(redPiece);
             this.tiles[row][col] = redPiece;
         }
+
+        this.getAllPossibleMoves();
     }
 
     executeMove(move) {
@@ -59,21 +65,33 @@ class Board {
         }
     }
 
+    setPossibleMoves(moves) {
+        this.possibleMoves.clear();
+        for (let move of moves) {
+            if (this.possibleMoves.has(move.position)) {
+                this.possibleMoves[move.position].push(move);
+            }
+            else {
+                this.possibleMoves[move.position] = [move];
+            }
+        }
+    }
+
     getAllPossibleMoves() {
         let currentPieces = this.activePieces == "red" ? this.activeRedPieces : this.activeBlackPieces;
         let jumpMoves = [];
         let slideMoves = [];
 
-        for (piece of currentPieces) {
+        for (let piece of currentPieces) {
             jumpMoves.push(this.getJumpMoves(piece));
             slideMoves.push(this.getSlideMoves(piece));
         }
 
         if (jumpMoves.length != 0) {
-            this.possibleMoves = jumpMoves;
+            this.setPossibleMoves(jumpMoves);
         }
         else {
-            this.possibleMoves = slideMoves;
+            this.setPossibleMoves(slideMoves);
         }
     }
 
@@ -136,6 +154,9 @@ class Board {
     }
 
     switchPlayerTurn() {
+        for (let piece of this.currentPieces) {
+            piece.moveAllowed = false;
+        }
         this.activePlayer = this.activePlayer == "red" ? "black" : "red";
         this.getAllPossibleMoves();
     }

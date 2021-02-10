@@ -4,6 +4,7 @@ class Piece {
         this.color = color;
         this.position = position;
         this.isKing = isKing;
+        this.moveAllowed = false;
     }
 
     canMoveUp() {

@@ -15,6 +15,7 @@ class Game {
         this.state = Game.State.NOT_STARTED;
         this.winner = null;
         this.moves = [];
+        this.start();
     }
 
     get activePlayer() {
@@ -35,6 +36,13 @@ class Game {
         if (this.board.activeBlackPieces.length == 0) {
             this.state = Game.State.FINISHED;
             this.winner = "red";
+        }
+    }
+
+    getValidPieces() {
+        let set = new Set();
+        for (let move of this.board.possibleMoves) {
+
         }
     }
 }

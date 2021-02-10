@@ -1,41 +1,56 @@
 class BoardView {
     constructor() {
-        this.ctx = document.getElementById("board");
         this.drawBoard();
     }
 
     drawBoard() {
         for (let i = 0; i < 8; i++) {
             for (let j = 0; j < 8; j++) {
-                let tile = document.createElement("div");
-                tile.id = String.fromCharCode(65 + i) + (j + 1);
-                tile.className = "board-tile ";
-                tile.className += (i % 2 == j % 2)? "red-tile" : "black-tile"; 
-                this.ctx.appendChild(tile);
+                this.renderTile(i, j);
             }
         }
     }
 
-    
-    /*removePiece(piece) {
-
-    }*/
-
-    createPiece(piece) {
-        let tile = getTile(piece.position.row, piece.position.col);
-        let pieceCtx = this.ctx.createElement("div");
-        pieceCtx.id = piece.id;
-        pieceCtx.class = "board-piece ";
-        pieceCtx.class += piece.color == "red" ? "red-piece" : "black-piece";
-        if (piece.isKing) {
-            pieceCtx.class += " kinged-piece";
-        }
+    renderTile(row, col) {
+        let tileId = String.fromCharCode(65 + row) + (col + 1);
+        let tile = "<div id=" + tileId + "></div>";
+        $("#board").append(tile);
+        $("#" + tileId).addClass("board-tile");
+        $("#" + tileId).addClass(row % 2 == col % 2 ? "red-tile" : "black-tile");
     }
 
+    renderPiece(piece) {
+        let pieceCtx = "<div id=" + piece.id + "></div>";
+        let tile = this.getTileElement(piece.position.row, piece.position.col);
+        tile.append(pieceCtx);
+        $("#" + piece.id).addClass("board-piece");
+        $("#" + piece.id).addClass(piece.color + "-piece");
+        if (piece.isKing) {
+            $("#" + piece.id).addClass("king");
+        }
 
-    getTile(row, col) {
+        $("#" + piece.id).on("click", function() {
+            if ($(this).hasClass("valid")) {
+
+            }
+        });
+    }
+
+    removePiece(piece) {
+        $("#" + piece.id).remove();
+    }
+
+    setPieceValid(piece) {
+        $("#" + piece.id).addClass("legal");
+    }
+
+    setPieceInvalid(piece) {
+        $("#" + piece.id).removeClass("legal");
+    }
+
+    getTileElement(row, col) {
         let tileId = String.fromCharCode(65 + row) + (col + 1);
-        return this.ctx.getElementById(tileId);
+        return $("#" + tileId);
     }
 }
 
