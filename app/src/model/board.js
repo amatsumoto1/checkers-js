@@ -13,7 +13,7 @@ class Board {
         this.possibleMoves = new Map();
 
         for (let i = 0; i < 8; i++) {
-            this.tiles[i] = new Array(8);
+            this.tiles[i] = new Array(8).fill(null);
         }
     }
 
@@ -52,15 +52,16 @@ class Board {
     }
 
     executeMove(move) {
-        this.movePiece(move.piece, move.endPosition);
-        if (move.isKinged) {
+        this.movePiece(move.piece, move.end);
+        if (move.pieceKinged) {
             move.piece.isKing = true;
         }
         if (move.takenPiece != null) {
             this.removePiece(move.takenPiece);
             let nextMoves = this.getJumpMoves(move.piece);
             if (nextMoves.length != 0) {
-                this.possibleMoves = nextMoves;
+                this.possibleMoves.clear()
+                this.possibleMoves.set(move.piece, nextMoves);
             }
             else {
                 this.switchPlayerTurn();
@@ -176,20 +177,20 @@ class Board {
 
     movePiece(piece, position) {
         this.tiles[piece.position.row][piece.position.col] = null;
-        this.tiles[position.row][position.col] = null;
-        this.piece.position = position;
+        this.tiles[position.row][position.col] = piece;
+        piece.position = position;
     }
 
     removePiece(piece) {
         this.tiles[piece.position.row][piece.position.col] = null;
         if (piece.color == 'black') {
             let index = this.activeBlackPieces.indexOf(piece);
-            this.activeBlackPieces.splice(index);
+            this.activeBlackPieces.splice(index, 1);
             this.capturedBlackPieces.push(piece);
         }
         else {
             let index = this.activeRedPieces.indexOf(piece);
-            this.activeRedPieces.splice(index);
+            this.activeRedPieces.splice(index, 1);
             this.capturedBlackPieces.push(piece);
         }
     }

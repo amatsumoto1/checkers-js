@@ -30,7 +30,7 @@ body {
     background-color:  rgba(255, 0, 0, 0.6);
 }
 
-.board-tile .valid {
+.valid {
     background-color: rgba(0, 255, 0, 0.5);
 }
 

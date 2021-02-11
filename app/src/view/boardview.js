@@ -18,7 +18,10 @@ class BoardView {
     }
 
     callTileSelected(row, col) {
-        this.onTileSelected(row, col);
+        let tile = this.getTileElement(row, col);
+        if (!tile.hasChildNodes()) {
+            this.onTileSelected(row, col);
+        }
     }
 
     drawBoard() {
@@ -36,8 +39,7 @@ class BoardView {
         document.getElementById("board").appendChild(tile);
         tile.classList.add("board-tile");
         tile.classList.add(row % 2 == col % 2 ? "red-tile" : "black-tile");
-        var self = this;
-        tile.onclick = function() {self.callTileSelected(row, col)};
+        tile.onclick = this.callTileSelected.bind(this, row, col);
     }
 
     renderPiece(piece) {
@@ -50,9 +52,7 @@ class BoardView {
         if (piece.isKing) {
             pieceCtx.classList.addClass("king");
         }
-
-        var self = this;
-        pieceCtx.onclick = function() {self.callPieceSelected(piece.id)};
+        pieceCtx.onclick = this.callPieceSelected.bind(this, piece.id);
     }
 
     removePiece(piece) {
@@ -68,11 +68,21 @@ class BoardView {
     }
 
     setTileValid(row, col) {
-        this.getTileElement(row, col).addClass("valid");
+        this.getTileElement(row, col).classList.add("valid");
+    }
+
+    updatePiece(piece) {
+        let pieceCtx = document.getElementById(piece.id);
+        pieceCtx.parentNode.removeChild(pieceCtx);
+        let newTile = this.getTileElement(piece.position.row, piece.position.col);
+        newTile.appendChild(pieceCtx);
     }
 
     resetTilesValid() {
-        document.getElementsByClassName("valid").classList.remove("valid");
+        let validTiles = [].slice.call(document.getElementsByClassName("valid"));
+        for (let validTile of validTiles) {
+            validTile.classList.remove("valid");
+        }
     }
 
     getTileElement(row, col) {
