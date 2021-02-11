@@ -21,6 +21,14 @@ class Board {
         return this.activePlayer == "red" ? this.activeRedPieces : this.activeBlackPieces;
     }
 
+    bindToPieceCanMove(callback) {
+        this.onPieceCanMove = callback;
+    }
+
+    bindToPieceCannotMove(callback) {
+        this.onPieceCannotMove = callback;
+    }
+
     initBoardPieces() {
         for (let i = 0; i < 12; i++) {
             let row = Math.floor(i / 4);
@@ -44,9 +52,7 @@ class Board {
     }
 
     executeMove(move) {
-        this.tiles[move.startPosition.row][move.startPosition.col] = null;
-        this.tiles[move.endPosition.row][move.endPosition.col] = move.piece;
-        move.piece.position = move.endPosition;
+        this.movePiece(move.piece, move.endPosition);
         if (move.isKinged) {
             move.piece.isKing = true;
         }
@@ -68,23 +74,22 @@ class Board {
     setPossibleMoves(moves) {
         this.possibleMoves.clear();
         for (let move of moves) {
-            if (this.possibleMoves.has(move.position)) {
-                this.possibleMoves[move.position].push(move);
+            if (this.possibleMoves.has(move.piece)) {
+                this.possibleMoves.get(move.piece).push(move);
             }
             else {
-                this.possibleMoves[move.position] = [move];
+                this.possibleMoves.set(move.piece, [move]);
             }
         }
     }
 
     getAllPossibleMoves() {
-        let currentPieces = this.activePieces == "red" ? this.activeRedPieces : this.activeBlackPieces;
         let jumpMoves = [];
         let slideMoves = [];
 
-        for (let piece of currentPieces) {
-            jumpMoves.push(this.getJumpMoves(piece));
-            slideMoves.push(this.getSlideMoves(piece));
+        for (let piece of this.currentPieces) {
+            jumpMoves.push(...this.getJumpMoves(piece));
+            slideMoves.push(...this.getSlideMoves(piece));
         }
 
         if (jumpMoves.length != 0) {
@@ -167,6 +172,12 @@ class Board {
 
     getPiece(position) {
         return this.tiles[position.row][position.col];
+    }
+
+    movePiece(piece, position) {
+        this.tiles[piece.position.row][piece.position.col] = null;
+        this.tiles[position.row][position.col] = null;
+        this.piece.position = position;
     }
 
     removePiece(piece) {

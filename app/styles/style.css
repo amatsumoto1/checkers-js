@@ -30,6 +30,10 @@ body {
     background-color:  rgba(255, 0, 0, 0.6);
 }
 
+.board-tile .valid {
+    background-color: rgba(0, 255, 0, 0.5);
+}
+
 .board-piece {
     margin: auto;
     margin-top: 5px;

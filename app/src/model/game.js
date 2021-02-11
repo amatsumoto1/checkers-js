@@ -22,9 +22,26 @@ class Game {
         return this.board.activePlayer;
     }
 
+    bindToMoveExecuted(callback) {
+        this.onMoveExecuted = callback;
+    } 
+
+    bindToStateUpdated(callback) {
+        this.onStateUpdated = callback;
+    }
+
     start() {
         this.state = Game.State.PLAYING;
         this.board.initBoardPieces();
+    }
+
+    executeMove(move) {
+        this.board.executeMove(move);
+        this.updateState();
+        this.moves.push(move);
+        if (this.onMoveExecuted != null) {
+            this.onMoveExecuted(move);
+        }
     }
 
     updateState() {
@@ -37,14 +54,13 @@ class Game {
             this.state = Game.State.FINISHED;
             this.winner = "red";
         }
-    }
 
-    getValidPieces() {
-        let set = new Set();
-        for (let move of this.board.possibleMoves) {
-
+        if (this.onStateUpdated != null) {
+            this.onStateUpdated(this.state);
         }
     }
+
+    
 }
 
 export default Game;

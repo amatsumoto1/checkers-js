@@ -15,17 +15,6 @@ class GameView {
         for (let piece of this.model.board.activeRedPieces) {
             this.boardView.renderPiece(piece);
         }
-
-        this.updatePiecesToMove();
-    }
-
-    updatePiecesToMove() {
-        for (let piece of this.model.board.currentPieces) {
-            this.boardView.setPieceInvalid(piece);
-            if (this.model.board.possibleMoves.has(piece)) {
-                this.boardView.setPieceValid(piece);
-            }
-        }
     }
 }
 

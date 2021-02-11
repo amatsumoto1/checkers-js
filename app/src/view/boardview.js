@@ -1,6 +1,24 @@
+import Board from "../model/board.js";
+
 class BoardView {
     constructor() {
         this.drawBoard();
+    }
+
+    bindToPieceSelected(callback) {
+        this.onPieceSelected = callback;
+    }
+
+    callPieceSelected(piece) {
+        this.onPieceSelected(piece);
+    }
+
+    bindToTileSelected(callback) {
+        this.onTileSelected = callback;
+    }
+
+    callTileSelected(row, col) {
+        this.onTileSelected(row, col);
     }
 
     drawBoard() {
@@ -13,44 +31,53 @@ class BoardView {
 
     renderTile(row, col) {
         let tileId = String.fromCharCode(65 + row) + (col + 1);
-        let tile = "<div id=" + tileId + "></div>";
-        $("#board").append(tile);
-        $("#" + tileId).addClass("board-tile");
-        $("#" + tileId).addClass(row % 2 == col % 2 ? "red-tile" : "black-tile");
+        let tile = document.createElement("div");
+        tile.id = tileId;
+        document.getElementById("board").appendChild(tile);
+        tile.classList.add("board-tile");
+        tile.classList.add(row % 2 == col % 2 ? "red-tile" : "black-tile");
+        var self = this;
+        tile.onclick = function() {self.callTileSelected(row, col)};
     }
 
     renderPiece(piece) {
-        let pieceCtx = "<div id=" + piece.id + "></div>";
+        let pieceCtx = document.createElement("div");
+        pieceCtx.id = piece.id;
         let tile = this.getTileElement(piece.position.row, piece.position.col);
-        tile.append(pieceCtx);
-        $("#" + piece.id).addClass("board-piece");
-        $("#" + piece.id).addClass(piece.color + "-piece");
+        tile.appendChild(pieceCtx);
+        pieceCtx.classList.add("board-piece");
+        pieceCtx.classList.add(piece.color + "-piece");
         if (piece.isKing) {
-            $("#" + piece.id).addClass("king");
+            pieceCtx.classList.addClass("king");
         }
 
-        $("#" + piece.id).on("click", function() {
-            if ($(this).hasClass("valid")) {
-
-            }
-        });
+        var self = this;
+        pieceCtx.onclick = function() {self.callPieceSelected(piece.id)};
     }
 
     removePiece(piece) {
-        $("#" + piece.id).remove();
+        document.getElementById(piece.id).remove();
     }
 
     setPieceValid(piece) {
-        $("#" + piece.id).addClass("legal");
+        document.getElementById(piece.id).classList.add("legal");
     }
 
     setPieceInvalid(piece) {
-        $("#" + piece.id).removeClass("legal");
+        document.getElementById(piece.id).classList.remove("legal");
+    }
+
+    setTileValid(row, col) {
+        this.getTileElement(row, col).addClass("valid");
+    }
+
+    resetTilesValid() {
+        document.getElementsByClassName("valid").classList.remove("valid");
     }
 
     getTileElement(row, col) {
         let tileId = String.fromCharCode(65 + row) + (col + 1);
-        return $("#" + tileId);
+        return document.getElementById(tileId);
     }
 }
 
