@@ -67,6 +67,17 @@ class BoardView {
         document.getElementById(piece.id).classList.remove("legal-piece");
     }
 
+    setPieceSelected(piece) {
+        document.getElementById(piece.id).classList.add("selected");
+    }
+
+    resetSelectedPieces() {
+        let validTiles = [].slice.call(document.getElementsByClassName("selected"));
+        for (let validTile of validTiles) {
+            validTile.classList.remove("selected");
+        }
+    }
+
     setTileValid(row, col) {
         this.getTileElement(row, col).classList.add("valid");
     }

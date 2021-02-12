@@ -27,7 +27,9 @@ class GameController {
     handlePieceSelected(id) {
         this.selectedPiece = this.model.board.currentPieces.filter(piece => piece.id == id)[0];
         this.view.boardView.resetTilesValid();
+        this.view.boardView.resetSelectedPieces();
         if (this.selectedPiece != null) {
+            this.view.boardView.setPieceSelected(this.selectedPiece);
             if (this.model.board.possibleMoves.has(this.selectedPiece)) {
                 for (let move of this.model.board.possibleMoves.get(this.selectedPiece)) {
                     this.view.boardView.setTileValid(move.end.row, move.end.col);
@@ -48,6 +50,7 @@ class GameController {
                 this.view.boardView.resetTilesValid();
                 if (this.model.activePlayer != this.selectedPiece.color) {
                     this.selectedPiece = null;
+                    this.view.boardView.resetSelectedPieces();
                 }
                 else {
                     let nextPosition = this.model.board.possibleMoves.get(this.selectedPiece)[0].end;
@@ -57,6 +60,7 @@ class GameController {
             }
         }
         else {
+            this.view.boardView.resetSelectedPieces();
             this.view.boardView.resetTilesValid();
         }
     }

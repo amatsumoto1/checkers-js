@@ -5,15 +5,20 @@
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>Checkers App</title>
         <link rel="stylesheet" href="assets/styles/style.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     </head>
     <body>
         <noscript>
             Your browser does not support javascript.
         </noscript>
-        <!--<div id="menu">
-            <button id="restart"></button>
-        </div>-->
-        <div id="board" class="center"></div> />
+        <div id="wrap" class="center">
+            <div id="button-menu">
+                <button id="new-game-button">RESET</button>
+                <button id="undo-button" class="fa fa-undo" />
+            </div>
+            <div id="board"></div> />
+        </div>
+
 
         <script type="module" src="src/app.js"></script>
         <script type="module" src="src/model/board.js"></script>
