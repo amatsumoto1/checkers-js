@@ -15,7 +15,7 @@ class Game {
         this.state = Game.State.NOT_STARTED;
         this.winner = null;
         this.moves = [];
-        this.start();
+        this.board.initBoardPieces();
     }
 
     get activePlayer() {
@@ -30,9 +30,11 @@ class Game {
         this.onStateUpdated = callback;
     }
 
+
+
     start() {
         this.state = Game.State.PLAYING;
-        this.board.initBoardPieces();
+        this.board.start();
     }
 
     executeMove(move) {

@@ -4,7 +4,6 @@ class GameView {
     constructor(model) {
         this.model = model;
         this.boardView = new BoardView(model.board);
-        this.init();
     }
 
     init() {

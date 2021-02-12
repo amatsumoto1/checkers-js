@@ -9,6 +9,7 @@ class GameController {
         this.selectedPiece = null;
         this.bindToModel();
         this.bindToView();
+        this.model.start();
     }
 
     bindToModel() {
@@ -20,6 +21,7 @@ class GameController {
     bindToView() {
         this.view.boardView.bindToPieceSelected(this.handlePieceSelected.bind(this));
         this.view.boardView.bindToTileSelected(this.handleTileSelected.bind(this));
+        this.view.init();
     }
 
     handlePieceSelected(id) {

@@ -60,11 +60,11 @@ class BoardView {
     }
 
     setPieceValid(piece) {
-        document.getElementById(piece.id).classList.add("legal");
+        document.getElementById(piece.id).classList.add("legal-piece");
     }
 
     setPieceInvalid(piece) {
-        document.getElementById(piece.id).classList.remove("legal");
+        document.getElementById(piece.id).classList.remove("legal-piece");
     }
 
     setTileValid(row, col) {

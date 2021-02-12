@@ -47,7 +47,9 @@ class Board {
             this.activeRedPieces.push(redPiece);
             this.tiles[row][col] = redPiece;
         }
+    }
 
+    start() {
         this.getAllPossibleMoves();
     }
 
@@ -73,6 +75,9 @@ class Board {
     }
 
     setPossibleMoves(moves) {
+        for (let piece of this.possibleMoves.keys()) {
+            this.onPieceCannotMove(piece);
+        }
         this.possibleMoves.clear();
         for (let move of moves) {
             if (this.possibleMoves.has(move.piece)) {
@@ -81,6 +86,7 @@ class Board {
             else {
                 this.possibleMoves.set(move.piece, [move]);
             }
+            this.onPieceCanMove(move.piece);
         }
     }
 
