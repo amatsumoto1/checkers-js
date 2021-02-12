@@ -82,6 +82,11 @@ class BoardView {
         this.getTileElement(row, col).classList.add("valid");
     }
 
+    kingPiece(piece) {
+        let pieceCtx = document.getElementById(piece.id);
+        pieceCtx.classList.add("king");
+    }
+
     updatePiece(piece) {
         let pieceCtx = document.getElementById(piece.id);
         pieceCtx.parentNode.removeChild(pieceCtx);

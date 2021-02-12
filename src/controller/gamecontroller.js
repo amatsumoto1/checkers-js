@@ -78,6 +78,9 @@ class GameController {
         if (move.takenPiece != null) {
             this.view.boardView.removePiece(move.takenPiece);
         }
+        if (move.pieceKinged) {
+            this.view.boardView.kingPiece(move.piece);
+        }
     }
 }
 
