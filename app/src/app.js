@@ -10,6 +10,4 @@ class App {
     }
 };
 
-$(document).ready(function() {
-    const app = new App();
-});
+const app = new App();

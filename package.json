@@ -1,7 +1,7 @@
 {
   "name": "checkers",
   "version": "0.0.0",
-  "description": "A checkers web application written in javascript and jQuery",
+  "description": "A checkers web application written in pure javascript",
   "scripts": {
     "test": "mocha"
   },
