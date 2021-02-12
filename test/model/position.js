@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import Position from "../../app/src/model/position.js";
+import Position from "../../src/model/position.js";
 
 describe("position", function() {
 

@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "description": "A checkers web application written in pure javascript",
   "scripts": {
-    "test": "mocha"
+    "test": "mocha",
+    "deploy": "git subtree push --prefix subfolder-name-here origin gh-pages"
   },
   "repository": {
     "type": "git",

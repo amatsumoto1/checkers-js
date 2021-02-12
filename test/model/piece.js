@@ -1,6 +1,6 @@
 import { expect } from "chai";
-import Piece from "../../app/src/model/piece.js";
-import Position from "../../app/src/model/position.js";
+import Piece from "../../src/model/piece.js";
+import Position from "../../src/model/position.js";
 
 describe("piece", function() {
 

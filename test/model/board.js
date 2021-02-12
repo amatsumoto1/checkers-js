@@ -1,8 +1,8 @@
 import { expect } from "chai";
-import Board from "../../app/src/model/board.js";
-import Move from "../../app/src/model/move.js";
-import Piece from "../../app/src/model/piece.js";
-import Position from "../../app/src/model/position.js";
+import Board from "../../src/model/board.js";
+import Move from "../../src/model/move.js";
+import Piece from "../../src/model/piece.js";
+import Position from "../../src/model/position.js";
 
 describe("board", function() {
     it("should initialize", function() {
