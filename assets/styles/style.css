@@ -55,7 +55,7 @@ body {
     background-color:  rgba(255, 0, 0, 0.6);
 }
 
-.valid {
+.valid-tile {
     background-color: rgba(0, 255, 0, 0.5);
 }
 
@@ -69,16 +69,8 @@ body {
     border-color: black;
 }
 
-.board-piece.king {
+.king-piece {
     background-image: url("../images/crown.png");
-}
-
-.legal-piece {
-    box-shadow: 0 0 3pt 2pt rgba(250, 250, 40, 0.7);
-}
-
-.legal-piece.selected {
-    box-shadow: 0 0 3pt 5pt rgba(250, 250, 40, 0.9);
 }
 
 .red-piece {
@@ -87,4 +79,12 @@ body {
 
 .black-piece {
     background-color: darkslategray
+}
+
+.moveable-piece {
+    box-shadow: 0 0 3pt 2pt rgba(250, 250, 40, 0.7);
+}
+
+.moveable-piece.selected {
+    box-shadow: 0 0 3pt 5pt rgba(250, 250, 40, 0.9);
 }

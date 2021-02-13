@@ -1,85 +1,76 @@
 import Board from "../model/board.js";
 import Position from "../model/position.js";
-import BoardView from "../view/boardview.js";
+import BoardView from "../view/board-view.js";
 
 class GameController {
     constructor(model, view) {
         this.model = model;
         this.view = view;
         this.selectedPiece = null;
-        this.bindToModel();
-        this.bindToView();
         this.model.start();
-    }
-
-    bindToModel() {
-        this.model.bindToMoveExecuted(this.onMoveExecuted.bind(this));
-        this.model.board.bindToPieceCanMove(this.onPieceActivated.bind(this));
-        this.model.board.bindToPieceCannotMove(this.onPieceDeactivated.bind(this));
+        this.bindToView();
     }
 
     bindToView() {
-        this.view.boardView.bindToPieceSelected(this.handlePieceSelected.bind(this));
-        this.view.boardView.bindToTileSelected(this.handleTileSelected.bind(this));
-        this.view.init();
+        this.drawBoardPieces();
+        this.view.board.bindToOnPieceSelected(this.handlePieceSelect.bind(this));
+        this.view.board.bindToOnTileSelected(this.handleTileSelected.bind(this));
+        this.updateMoveablePieces();
     }
 
-    handlePieceSelected(id) {
-        this.selectedPiece = this.model.board.currentPieces.filter(piece => piece.id == id)[0];
-        this.view.boardView.resetTilesValid();
-        this.view.boardView.resetSelectedPieces();
-        if (this.selectedPiece != null) {
-            this.view.boardView.setPieceSelected(this.selectedPiece);
-            if (this.model.board.possibleMoves.has(this.selectedPiece)) {
-                for (let move of this.model.board.possibleMoves.get(this.selectedPiece)) {
-                    this.view.boardView.setTileValid(move.end.row, move.end.col);
-                }
-            }
+    drawBoardPieces() {
+        for (let piece of this.model.board.pieces) {
+            this.view.board.addPiece(piece.id, piece.color, piece.position.row, piece.position.col);
+        }
+    }
+
+    handlePieceSelect(id) {
+        this.selectedPiece = this.model.board.getPieceFromId(id);
+        this.view.board.resetValidTiles();
+        this.view.board.resetSelectedPieces();
+        const moveablePos = this.model.board.validMoves.getEndPositions(this.selectedPiece);
+        for (let pos of moveablePos) {
+            this.view.board.setTileValid(pos.row, pos.col);
         }
     }
 
     handleTileSelected(row, col) {
-        let tilePosition = new Position(row, col);
+        const selectedPos = new Position(row, col);
         if (this.selectedPiece != null) {
-            if (this.model.board.possibleMoves.has(this.selectedPiece)) {
-                let selectedPieceMoves = this.model.board.possibleMoves.get(this.selectedPiece);
-                let selectedMove = selectedPieceMoves.filter(move => move.end.equals(tilePosition))[0];
-                if (selectedMove != null) {
-                    this.model.executeMove(selectedMove);
+            const move = this.model.board.validMoves.getMove(this.selectedPiece, selectedPos);
+            if (move != null) {
+                this.model.executeMove(move);
+                this.view.board.movePiece(move.piece.id, row, col);
+                if (move.takenPiece != null) {
+                    this.view.board.removePiece(move.takenPiece.id);
                 }
-                this.view.boardView.resetTilesValid();
-                if (this.model.activePlayer != this.selectedPiece.color) {
-                    this.selectedPiece = null;
-                    this.view.boardView.resetSelectedPieces();
+                if (move.pieceKinged) {
+                    this.view.board.setPieceKinged(move.piece.id);
                 }
-                else {
-                    let nextPosition = this.model.board.possibleMoves.get(this.selectedPiece)[0].end;
-                    this.view.boardView.setTileValid(nextPosition.row, nextPosition.col);
-                }
-                
+            }
+
+            this.view.board.resetValidTiles();
+            if (move != null && this.selectedPiece.color == this.model.board.activeColor) {
+                const nextPosition = this.model.board.validMoves.getEndPositions(this.selectedPiece)[0];
+                this.view.board.setTileValid(nextPosition.row, nextPosition.col);
+            }
+            else {
+                this.selectedPiece = null;
+                this.view.board.resetSelectedPieces();
             }
         }
         else {
-            this.view.boardView.resetSelectedPieces();
-            this.view.boardView.resetTilesValid();
+            this.view.board.resetSelectedPieces();
+            this.view.board.resetValidTiles();
         }
+        this.updateMoveablePieces();
     }
 
-    onPieceDeactivated(piece) {
-        this.view.boardView.setPieceInvalid(piece);
-    }
-
-    onPieceActivated(piece) {
-        this.view.boardView.setPieceValid(piece);
-    }
-
-    onMoveExecuted(move) {
-        this.view.boardView.updatePiece(move.piece);
-        if (move.takenPiece != null) {
-            this.view.boardView.removePiece(move.takenPiece);
-        }
-        if (move.pieceKinged) {
-            this.view.boardView.kingPiece(move.piece);
+    updateMoveablePieces() {
+        this.view.board.resetMoveablePieces();
+        const moveablePieces = this.model.board.validMoves.getMoveablePieces();
+        for (let piece of moveablePieces) {
+            this.view.board.setPieceMoveable(piece.id);
         }
     }
 }

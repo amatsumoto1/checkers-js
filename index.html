@@ -15,6 +15,7 @@
             <div id="button-menu">
                 <button id="new-game-button">RESET</button>
                 <button id="undo-button" class="fa fa-undo" />
+                <button id="redo-button" class="fa fa-redo" />
             </div>
             <div id="board"></div> />
         </div>
@@ -26,8 +27,12 @@
         <script type="module" src="src/model/move.js"></script>
         <script type="module" src="src/model/piece.js"></script>
         <script type="module" src="src/model/position.js"></script>
-        <script type="module" src="src/view/gameview.js"></script>
-        <script type="module" src="src/view/boardview.js"></script>
+        <script type="module" src="src/model/valid-moves.js"></script>
+        <script type="module" src="src/model/move-history.js"></script>
+        <script type="module" src="src/view/game-view.js"></script>
+        <script type="module" src="src/view/board-view.js"></script>
+        <script type="module" src="src/view/piece-view.js"></script>
+        <script type="module" src="src/view/tile-view.js"></script>
         <script type="module" src="src/controller/gamecontroller.js"></script>
     </body>
 </html>
