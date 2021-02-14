@@ -4,8 +4,10 @@ export class MoveHistory {
         this.undoneMoves = [];
     }
 
-    addMove(move) {
-        this.undoneMoves = [];
+    addMove(move, clearMoves=true) {
+        if (clearMoves) {
+            this.undoneMoves = [];
+        }
         this.history.push(move);
     }
 
@@ -41,6 +43,11 @@ export class MoveHistory {
         }
 
         return this.undoneMoves.pop();
+    }
+
+    reset() {
+        this.history = [];
+        this.undoneMoves = [];
     }
 
 }

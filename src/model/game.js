@@ -43,21 +43,33 @@ class Game {
     }
 
     reset() {
-        //
+        this.state = Game.State.PLAYING;
+        this.board.reset();
+        this.board.getAllPossibleMoves();
+        this.winner = null;
+        this.history.reset();
     }
 
-    executeMove(move) {
+    executeMove(move, isRedo=false) {
         this.board.executeMove(move);
         this.updateState();
-        this.history.addMove(move);
+        this.history.addMove(move, !isRedo);
     }
 
     undoMove() {
         if (this.history.canUndoMove()) {
             const move = this.history.getMoveToUndo();
-            const switchTurns = !this.history.canUndoMove() ||
-                this.history.peekMoveToUndo().piece.color != this.board.activeColor;
+            const switchTurns = this.history.canUndoMove() ?
+                this.history.peekMoveToUndo().piece.color != move.piece.color : true;
             this.board.undoMove(move, switchTurns);
+            this.updateState();
+        }
+    }
+
+    redoMove() {
+        if (this.history.canRedoMove()) {
+            const move = this.history.getMoveToRedo();
+            this.board.executeMove(move, true);
             this.updateState();
         }
     }

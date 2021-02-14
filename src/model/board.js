@@ -57,6 +57,16 @@ class Board {
         return this.pieces.find(piece => piece.id == id);
     }
 
+    reset() {
+        for (let piece of this.pieces) {
+            this.tiles[piece.position.row][piece.position.col] = null;
+        }
+        this.pieces = [];
+        this.validMoves.clear();
+        this.activeColor = "red";
+        this.init();
+    }
+
     /**
      * Executed the given move.
      * 
@@ -83,7 +93,7 @@ class Board {
     }
 
     undoMove(move, switchTurn = true) {
-        this.movePiece(move.piece, move.position);
+        this.movePiece(move.piece, move.start);
         if (move.pieceKinged) {
             move.piece.isKing = false;
         }
@@ -97,7 +107,7 @@ class Board {
         }
         else {
             const nextMoves = this.getJumpMoves(move.piece);
-            this.validMoves.add(nextMoves);
+            this.validMoves.setMoves(nextMoves);
         }
     }
 

@@ -56,6 +56,6 @@ export class PieceView {
     }
 
     removeFromBoard() {
-        this.ctx.remove();
+        this.ctx.parentElement.removeChild(this.ctx);
     }
 }

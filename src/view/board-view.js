@@ -6,6 +6,7 @@ class BoardView {
     constructor() {
         this.ctx = document.getElementById("board");
         this.pieces = new Map();
+        this.takenPieces = new Map();
         this.tiles = new Map();
         this.draw();
     }
@@ -23,7 +24,7 @@ class BoardView {
     }
 
     enable() {
-        this.ctx.classList.add("enabled");
+        this.ctx.classList.remove("disabled");
     }
 
     addTile(row, col) {
@@ -35,21 +36,29 @@ class BoardView {
     }
 
     addPiece(id, color, row, col) {
-        const piece = new PieceView(id, color);
+        const piece = this.takenPieces.has(id) ? this.takenPieces.get(id): new PieceView(id, color);
         this.pieces.set(id, piece);
         this.getTile(row, col).addPiece(piece);
     }
 
     removePiece(id) {
         let piece = this.pieces.get(id);
-        piece.removeFromBoard();
+        piece.removeFromTile()
         this.pieces.delete(id);
+        this.takenPieces.set(id, piece);
+    }
+
+    clearBoard() {
+        for (let piece of this.pieces) {
+            piece[1].removeFromTile();
+        }
+        this.pieces.clear();
     }
 
     movePiece(id, row, col) {
+        let tile = this.getTile(row, col);
         let piece = this.pieces.get(id);
         piece.removeFromTile();
-        let tile = this.getTile(row, col);
         tile.addPiece(piece);
     }
 
@@ -65,6 +74,10 @@ class BoardView {
 
     setPieceKinged(id) {
         this.pieces.get(id).setKinged();
+    }
+
+    setPieceUnkinged(id) {
+        this.pieces.get(id).setNotKinged();
     }
 
     resetMoveablePieces() {

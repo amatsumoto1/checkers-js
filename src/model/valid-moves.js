@@ -47,13 +47,17 @@ export class ValidMoves {
         return move;
     }
 
+    clear() {
+        this.moves.clear();
+    }
+
     /**
      * Sets the collection of valid moves.
      * 
      * @param {Array<Move>} moves Valid moves for this piece.
      */
     setMoves(moves) {
-        this.moves.clear();
+        this.clear();
         for (let move of moves) {
             if (!this.moves.has(move.piece)) {
                 this.moves.set(move.piece, [move]);
