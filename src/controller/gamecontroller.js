@@ -69,7 +69,7 @@ class GameController {
         }
         this.updateMoveablePieces();
         if (this.model.state == Game.State.FINISHED) {
-            this.view.setGameEnded();
+            this.view.setGameEnded(this.model.winner);
         }
     }
 
@@ -108,6 +108,9 @@ class GameController {
             this.updateMoveablePieces();
             this.selectedPiece = null;
             this.view.board.resetSelectedPieces();
+            if (this.model.state == Game.State.PLAYING) {
+                this.view.setGameStarted();
+            }
         }
     }
 
@@ -126,6 +129,9 @@ class GameController {
                 this.view.board.resetSelectedPieces();
             }
             this.updateMoveablePieces();
+            if (this.model.state == Game.State.FINISHED) {
+                this.view.setGameEnded(this.model.winner);
+            }
         }
     }
 

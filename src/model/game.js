@@ -83,6 +83,10 @@ class Game {
             this.winner = "red";
             this.state = Game.State.FINISHED;
         }
+        else {
+            this.winner = null;
+            this.state = Game.State.PLAYING;
+        }
     }
 
     

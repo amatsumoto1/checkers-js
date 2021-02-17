@@ -3,6 +3,7 @@ import BoardView from "./board-view.js";
 class GameView {
     constructor() {
         this.board = new BoardView();
+        this.textCtx = document.getElementById("winner-text");
     }
 
 
@@ -20,10 +21,12 @@ class GameView {
 
     setGameStarted() {
         this.board.enable();
+        this.textCtx.innerText = "";
     }
 
-    setGameEnded() {
+    setGameEnded(winner) {
         this.board.disable();
+        this.textCtx.innerText = winner.toUpperCase() + " WINS!";
     }
 }
 

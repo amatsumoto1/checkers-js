@@ -54,8 +54,4 @@ export class PieceView {
     removeFromTile() {
         this.ctx.parentElement.removeChild(this.ctx);
     }
-
-    removeFromBoard() {
-        this.ctx.parentElement.removeChild(this.ctx);
-    }
 }

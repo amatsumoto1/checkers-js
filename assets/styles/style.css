@@ -92,3 +92,9 @@ body {
 .disabled {
     pointer-events: none;
 }
+
+#winner-text {
+    width: 100%;
+    text-align: center;
+    font-size: 25px;
+}
