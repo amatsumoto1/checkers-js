@@ -75,11 +75,11 @@ class Game {
     }
 
     updateState() {
-        if (this.board.getPieces("red").length == 0) {
+        if (!this.board.getPieces("red").length) {
             this.winner = "black";
             this.state = Game.State.FINISHED;
         }
-        else if (this.board.getPieces("black").length == 0) {
+        else if (!this.board.getPieces("black").length) {
             this.winner = "red";
             this.state = Game.State.FINISHED;
         }

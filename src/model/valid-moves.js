@@ -40,7 +40,7 @@ export class ValidMoves {
      */
     getMove(piece, endPosition) {
         const move = this.moves.get(piece).find(move => move.end.equals(endPosition));
-        if (move == undefined) {
+        if (!move) {
             return null;
         }
 
@@ -58,7 +58,7 @@ export class ValidMoves {
      */
     setMoves(moves) {
         this.clear();
-        for (let move of moves) {
+        for (const move of moves) {
             if (!this.moves.has(move.piece)) {
                 this.moves.set(move.piece, [move]);
             }

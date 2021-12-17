@@ -42,14 +42,14 @@ class BoardView {
     }
 
     removePiece(id) {
-        let piece = this.pieces.get(id);
+        const piece = this.pieces.get(id);
         piece.removeFromTile()
         this.pieces.delete(id);
         this.takenPieces.set(id, piece);
     }
 
     clearBoard() {
-        for (let piece of this.pieces) {
+        for (const piece of this.pieces) {
             piece[1].removeFromTile();
         }
         this.pieces.clear();
@@ -63,7 +63,7 @@ class BoardView {
     }
 
     resetSelectedPieces() {
-        for (let piece of this.pieces) {
+        for (const piece of this.pieces) {
             piece[1].setNotSelected();
         }
     }
@@ -81,7 +81,7 @@ class BoardView {
     }
 
     resetMoveablePieces() {
-        for (let piece of this.pieces) {
+        for (const piece of this.pieces) {
             piece[1].setCannotMove();
         }
     }
@@ -91,25 +91,25 @@ class BoardView {
     }
 
     resetValidTiles() {
-        for (let tile of this.tiles) {
+        for (const tile of this.tiles) {
             tile[1].setInvalid();
         }
     }
 
     bindToOnPieceSelected(callback) {
-        for (let piece of this.pieces) {
+        for (const piece of this.pieces) {
             piece[1].bindToOnClicked(callback);
         }
     }
 
     bindToOnTileSelected(callback) {
-        for (let tile of this.tiles) {
+        for (const tile of this.tiles) {
             tile[1].bindToOnClicked(callback);
         }
     }
 
     getTile(row, col) {
-        let tileId = String.fromCharCode(65 + row) + (col + 1);
+        const tileId = String.fromCharCode(65 + row) + (col + 1);
         return this.tiles.get(tileId);
     }
 }

@@ -23,7 +23,7 @@ class GameController {
     }
 
     drawBoardPieces() {
-        for (let piece of this.model.board.pieces) {
+        for (const piece of this.model.board.pieces) {
             this.view.board.addPiece(piece.id, piece.color, piece.position.row, piece.position.col);
         }
     }
@@ -33,7 +33,7 @@ class GameController {
         this.view.board.resetValidTiles();
         this.view.board.resetSelectedPieces();
         const moveablePos = this.model.board.validMoves.getEndPositions(this.selectedPiece);
-        for (let pos of moveablePos) {
+        for (const pos of moveablePos) {
             this.view.board.setTileValid(pos.row, pos.col);
         }
     }
@@ -42,10 +42,10 @@ class GameController {
         const selectedPos = new Position(row, col);
         if (this.selectedPiece != null) {
             const move = this.model.board.validMoves.getMove(this.selectedPiece, selectedPos);
-            if (move != null) {
+            if (move !== null) {
                 this.model.executeMove(move);
                 this.view.board.movePiece(move.piece.id, row, col);
-                if (move.takenPiece != null) {
+                if (move.takenPiece !== null) {
                     this.view.board.removePiece(move.takenPiece.id);
                 }
                 if (move.pieceKinged) {
@@ -54,7 +54,7 @@ class GameController {
             }
 
             this.view.board.resetValidTiles();
-            if (move != null && this.selectedPiece.color == this.model.board.activeColor) {
+            if (move !== null && this.selectedPiece.color === this.model.board.activeColor) {
                 const nextPosition = this.model.board.validMoves.getEndPositions(this.selectedPiece)[0];
                 this.view.board.setTileValid(nextPosition.row, nextPosition.col);
             }
@@ -68,7 +68,7 @@ class GameController {
             this.view.board.resetValidTiles();
         }
         this.updateMoveablePieces();
-        if (this.model.state == Game.State.FINISHED) {
+        if (this.model.state === Game.State.FINISHED) {
             this.view.setGameEnded(this.model.winner);
         }
     }
@@ -95,8 +95,8 @@ class GameController {
 
     undo() {
         const move = this.model.history.peekMoveToUndo();
-        if (move != null) {
-            if (move.takenPiece != null) {
+        if (move) {
+            if (move.takenPiece) {
                 this.view.board.addPiece(move.takenPiece.id, move.takenPiece.color, 
                     move.takenPiece.position.row, move.takenPiece.position.col);
             }
@@ -108,7 +108,7 @@ class GameController {
             this.updateMoveablePieces();
             this.selectedPiece = null;
             this.view.board.resetSelectedPieces();
-            if (this.model.state == Game.State.PLAYING) {
+            if (this.model.state === Game.State.PLAYING) {
                 this.view.setGameStarted();
             }
         }
@@ -116,12 +116,12 @@ class GameController {
 
     redo() {
         const redoneMove = this.model.history.getMoveToRedo();
-        if (redoneMove != null) {
+        if (redoneMove) {
             this.doMove(redoneMove, true);
             this.view.board.resetValidTiles();
             this.selectedPiece = null;
     
-            if (this.model.board.activeColor == redoneMove.piece.color) {
+            if (this.model.board.activeColor === redoneMove.piece.color) {
                 const nextPosition = this.model.board.validMoves.getEndPositions(redoneMove.piece)[0];
                 this.view.board.setTileValid(nextPosition.row, nextPosition.col);
             }
@@ -129,7 +129,7 @@ class GameController {
                 this.view.board.resetSelectedPieces();
             }
             this.updateMoveablePieces();
-            if (this.model.state == Game.State.FINISHED) {
+            if (this.model.state === Game.State.FINISHED) {
                 this.view.setGameEnded(this.model.winner);
             }
         }
@@ -138,7 +138,7 @@ class GameController {
     doMove(move, isRedo = false) {
         this.model.executeMove(move, isRedo);
         this.view.board.movePiece(move.piece.id, move.end.row, move.end.col);
-        if (move.takenPiece != null) {
+        if (move.takenPiece) {
             this.view.board.removePiece(move.takenPiece.id);
         }
         if (move.pieceKinged) {

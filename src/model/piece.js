@@ -7,11 +7,11 @@ class Piece {
     }
 
     canMoveUp() {
-        return this.color == "black" || this.isKing;
+        return this.color === "black" || this.isKing;
     }
 
     canMoveDown() {
-        return this.color == "red" || this.isKing;
+        return this.color === "red" || this.isKing;
     }
 }
 

@@ -9,7 +9,7 @@ class Position {
     }
 
     equals(position) {
-        return this.row == position.row && this.col == position.col;
+        return this.row === position.row && this.col === position.col;
     }
 }
 

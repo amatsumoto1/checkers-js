@@ -12,11 +12,11 @@ export class MoveHistory {
     }
 
     canUndoMove() {
-        return this.history.length != 0;
+        return !!this.history.length;
     }
 
     peekMoveToUndo() {
-        if (this.history.length == 0) {
+        if (!this.history.length) {
             return null;
         }
 
@@ -24,7 +24,7 @@ export class MoveHistory {
     }
 
     getMoveToUndo() {
-        if (this.history.length == 0) {
+        if (!this.history.length) {
             return null;
         }
 

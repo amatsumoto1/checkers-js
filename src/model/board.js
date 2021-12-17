@@ -77,7 +77,7 @@ class Board {
         if (move.pieceKinged) {
             move.piece.isKing = true;
         }
-        if (move.takenPiece != null) {
+        if (move.takenPiece) {
             this.removePiece(move.takenPiece);
             const nextMoves = this.getJumpMoves(move.piece);
             if (nextMoves.length > 0) {
@@ -98,7 +98,7 @@ class Board {
             move.piece.isKing = false;
         }
 
-        if (move.takenPiece != null) {
+        if (move.takenPiece) {
             this.addPiece(move.takenPiece);
         }
 
@@ -146,7 +146,7 @@ class Board {
             slideMoves.push(...this.getSlideMoves(piece));
         }
 
-        if (jumpMoves.length != 0) {
+        if (jumpMoves.length) {
             this.validMoves.setMoves(jumpMoves);
         }
         else {
@@ -156,8 +156,8 @@ class Board {
 
     getJumpMoves(piece) {
         const offsets = [[-1, -1], [-1, 1], [1, -1], [1, 1]];
-        let moves = [];
-        for (let offset of offsets) {
+        const moves = [];
+        for (const offset of offsets) {
             const jumpPosition = new Position(piece.position.row + offset[0], piece.position.col + offset[1]);
             const endPosition = new Position(piece.position.row + 2*offset[0], piece.position.col + 2*offset[1]);
             if (this.isJumpMoveValid(piece, jumpPosition, endPosition)) {
@@ -172,9 +172,9 @@ class Board {
 
     getSlideMoves(piece) {
         const offsets = [[-1, -1], [-1, 1], [1, -1], [1, 1]];
-        let moves = [];
-        for (let offset of offsets) {
-            let end = new Position(piece.position.row + offset[0], piece.position.col + offset[1]);
+        const moves = [];
+        for (const offset of offsets) {
+            const end = new Position(piece.position.row + offset[0], piece.position.col + offset[1]);
             if (this.isSlideMoveValid(piece, end)) {
                 moves.push(new Move(piece, piece.position, end));
             }
@@ -206,7 +206,7 @@ class Board {
         }
 
         if (!this.hasPiece(jumpedPosition)
-            || this.getPiece(jumpedPosition).color == piece.color) {
+            || this.getPiece(jumpedPosition).color === piece.color) {
             return false;
         }
 
@@ -214,7 +214,7 @@ class Board {
     }
 
     switchTurns() {
-        this.activeColor = this.activeColor == "red" ? "black" : "red";
+        this.activeColor = this.activeColor === "red" ? "black" : "red";
         this.getAllPossibleMoves();
     }
 }
